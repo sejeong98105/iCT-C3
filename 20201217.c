@@ -740,16 +740,6 @@ void remote_status()
 void battery_led_display()
 {
 	//bool bBlinkStatus = true;
-	if (BlinkCount > 10) {
-		if (bBlinkStatus) {
-			bBlinkStatus = false;
-		}
-		else {
-			bBlinkStatus = true;
-		}
-		BlinkCount = 0;
-	}
-	BlinkCount++;
 
 //	while (1) {
 		// LED_Display Init
@@ -773,7 +763,20 @@ void battery_led_display()
 			if(_DEBUG){
 				printf("Battery Charging ...\n");
 			}
-			
+
+			BlinkCount++;
+
+			// 1초에 한번씩 bBlinkStatus 토글
+			if (BlinkCount >= 10) {
+				if (bBlinkStatus) {
+					bBlinkStatus = false;
+				}
+				else {
+					bBlinkStatus = true;
+				}
+				BlinkCount = 0;
+			}
+
 			if(bBlinkStatus) {  
 				for(int i=0;i<10;i++){
 					digitalWrite(batteryGpio[i],LED_Display[i]);
